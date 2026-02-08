@@ -15,7 +15,9 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**Task store:** Beads (`bd` CLI) — one epic per feature, one task bead per atomic task.
+
+**Save summary to:** `docs/plans/YYYY-MM-DD-<feature-name>.md` (lightweight pointer to the beads)
 
 ## Bite-Sized Task Granularity
 
@@ -26,9 +28,9 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 - "Run the tests and make sure they pass" - step
 - "Commit" - step
 
-## Plan Document Header
+## Plan Summary Document
 
-**Every plan MUST start with this header:**
+**Every plan MUST save a summary file with this structure:**
 
 ```markdown
 # [Feature Name] Implementation Plan
@@ -41,68 +43,117 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Tech Stack:** [Key technologies/libraries]
 
+**Epic:** `<epic-id>` (created by `bd create`)
+
 ---
+
+## Quick Reference
+
+View all tasks:
+bd list --parent <epic-id> --pretty
+
+View next unblocked tasks:
+bd ready --parent <epic-id>
+
+This file is a summary only. All task details live in the beads.
 ```
 
-## Task Structure
+## Creating Beads
 
-```markdown
-### Task N: [Component Name]
+### Step 1: Create the epic
 
-**Files:**
-- Create: `exact/path/to/file.py`
-- Modify: `exact/path/to/existing.py:123-145`
-- Test: `tests/exact/path/to/test.py`
+```bash
+bd create "Feature Name" --type epic --description "One-line goal of this feature"
+```
+
+Note the epic ID returned.
+
+### Step 2: Create task beads
+
+One `bd create` per atomic task. Each task description must contain exact file paths, complete code, exact commands, and expected output — everything the implementer needs.
+
+```bash
+bd create "Task title" \
+  --type task \
+  --parent <epic-id> \
+  --description "**Files:**
+- Create: exact/path/to/file.py
+- Modify: exact/path/to/existing.py:123-145
+- Test: tests/exact/path/to/test.py
 
 **Step 1: Write the failing test**
 
-```python
+\`\`\`python
 def test_specific_behavior():
     result = function(input)
     assert result == expected
-```
+\`\`\`
 
 **Step 2: Run test to verify it fails**
 
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
+Run: pytest tests/path/test.py::test_name -v
+Expected: FAIL with 'function not defined'
 
 **Step 3: Write minimal implementation**
 
-```python
+\`\`\`python
 def function(input):
     return expected
-```
+\`\`\`
 
 **Step 4: Run test to verify it passes**
 
-Run: `pytest tests/path/test.py::test_name -v`
+Run: pytest tests/path/test.py::test_name -v
 Expected: PASS
 
 **Step 5: Commit**
 
-```bash
+\`\`\`bash
 git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
+git commit -m 'feat: add specific feature'
+\`\`\`" \
+  --acceptance "Tests pass, function returns expected value for given input"
 ```
+
+### Step 3: Set dependencies
+
+Only where ordering actually matters:
+
+```bash
+bd dep add <task-2-id> <task-1-id>
 ```
+
+This means task-2 depends on task-1 (task-1 must finish first).
+
+### Step 4: Verify
+
+```bash
+bd list --parent <epic-id> --pretty
+```
+
+Review the task tree. Ensure each task has:
+- Exact file paths
+- Complete code (not "add validation")
+- Exact commands with expected output
+- Verifiable acceptance criteria
 
 ## Remember
 - Exact file paths always
-- Complete code in plan (not "add validation")
+- Complete code in task descriptions (not "add validation")
 - Exact commands with expected output
 - Reference relevant skills with @ syntax
 - DRY, YAGNI, TDD, frequent commits
+- These qualities apply to the task descriptions inside beads
 
 ## Execution Handoff
 
-After saving the plan, offer execution choice:
+After saving the summary and creating all beads, offer execution choice:
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
+**"Plan complete: summary saved to `docs/plans/<filename>.md`, epic `<epic-id>` with N task beads created. Two execution options:**
 
 **1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
 
-**2. Parallel Session (separate)** - Open new session with executing-plans, batch execution with checkpoints
+**2. Parallel Session (separate)** - Open new session with executing-plans, batch execution with checkpoints. Find tasks with: `bd list --parent <epic-id> --pretty`
 
 **Which approach?"**
 
