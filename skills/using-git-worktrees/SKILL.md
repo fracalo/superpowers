@@ -47,6 +47,13 @@ No worktree directory found. Where should I create worktrees?
 
 Which would you prefer?
 ```
+### 4. Env variables for testing
+```
+Should we copy .env related assets from the originating worktree? This will be useful to run the app in the worktree.
+
+1. Yes, copy all .env related files (ex: .env*)
+2. No
+```
 
 ## Safety Verification
 
