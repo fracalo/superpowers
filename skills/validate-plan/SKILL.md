@@ -1,9 +1,9 @@
 ---
-name: grind-plan
+name: validate-plan
 description: Use when a design document or implementation plan exists and needs validation before execution begins - checks for gaps, ambiguity, missing file paths, unclear test strategies, or anything that would block an AI agent from executing the plan without interpretation
 ---
 
-# Grind Plan
+# Validate Plan
 
 ## Overview
 

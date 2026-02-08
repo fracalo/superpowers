@@ -1,6 +1,6 @@
 ---
-description: Grind the latest plan
+description: Set up a worktree environment 
 disable-model-invocation: true
 ---
 
-Invoke the superpowers:grind-plan skill and follow it exactly as presented to you
+Invoke the superpowers:using-git-worktree skill and follow it exactly as presented to you
