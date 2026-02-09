@@ -111,7 +111,12 @@ Auto-detect and run appropriate setup:
 
 ```bash
 # Node.js
+# check package manager
 if [ -f package.json ]; then npm install; fi
+# with yarn
+if [ -f package.json ]; then yarn install; fi
+# with pnpm
+if [ -f package.json ]; then pnpm install; fi
 
 # Rust
 if [ -f Cargo.toml ]; then cargo build; fi
