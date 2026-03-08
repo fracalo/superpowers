@@ -19,7 +19,7 @@ Validate that a plan is complete enough for an AI agent to execute without inter
 NO EXECUTION WITHOUT PLAN VALIDATION FIRST
 ```
 
-If the plan hasn't passed grind-plan, it is not ready for execution. Period.
+If the plan hasn't passed validate-plan, it is not ready for execution. Period.
 
 ## The 7 Validation Dimensions
 
@@ -160,7 +160,7 @@ A single blocking issue = FAIL.
 ## Workflow Position
 
 ```
-brainstorming → grind-plan → writing-plans → executing-plans
+brainstorming → validate-plan → writing-plans → executing-plans
                  ^^^^^^^^^^^
                  YOU ARE HERE
 ```
@@ -170,6 +170,6 @@ brainstorming → grind-plan → writing-plans → executing-plans
 
 ## The Bottom Line
 
-**A plan that passes grind-plan can be executed by a fresh agent with zero context and zero judgment calls.**
+**A plan that passes validate-plan can be executed by a fresh agent with zero context and zero judgment calls.**
 
 If the executor needs to interpret, guess, or decide — the plan fails.
